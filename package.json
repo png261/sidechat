@@ -1,0 +1,47 @@
+{
+  "name": "sidebuddy",
+  "private": false,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.12.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/png261/sidebuddy"
+  },
+  "main": "./dist/sidebuddy.umd.js",
+  "module": "./dist/sidebuddy.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/sidebuddy.es.js",
+      "require": "./dist/sidebuddy.umd.js"
+    },
+    "./styles.css": "./dist/sidebuddy.css"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "vite build",
+    "lint": "npx @biomejs/biome lint --write ./src",
+    "format": "npx @biomejs/biome check --write --organize-imports-enabled=true ./src",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage",
+    "prepack": "json -f package.json -I -e \"delete this.devDependencies; delete this.dependencies\""
+  },
+  "peerDependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": [
+      "biome check --files-ignore-unknown=true",
+      "biome check --write --no-errors-on-unmatched",
+      "biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true",
+      "biome format --write --no-errors-on-unmatched"
+    ]
+  }
+}
