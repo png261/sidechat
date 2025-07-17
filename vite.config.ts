@@ -7,8 +7,8 @@ export default defineConfig({
     build: {
         lib: {
             entry: path.resolve(__dirname, 'src/index.ts'), 
-            name: 'Sidebuddy',
-            fileName: (format) => `sidebuddy.${format}.js`,
+            name: 'WebAgent',
+            fileName: (format) => `web_agent.${format}.js`,
         },
         rollupOptions: {
             // Externalize React so it’s not bundled

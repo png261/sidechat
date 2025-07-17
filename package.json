@@ -1,22 +1,22 @@
 {
-  "name": "sidebuddy",
+  "name": "web_agent",
   "private": false,
   "version": "1.0.0",
   "packageManager": "pnpm@10.12.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/png261/sidebuddy"
+    "url": "https://github.com/png261/web_agent"
   },
-  "main": "./dist/sidebuddy.umd.js",
-  "module": "./dist/sidebuddy.es.js",
+  "main": "./dist/web_agent.umd.js",
+  "module": "./dist/web_agent.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/sidebuddy.es.js",
-      "require": "./dist/sidebuddy.umd.js"
+      "import": "./dist/web_agent.es.js",
+      "require": "./dist/web_agent.umd.js"
     },
-    "./styles.css": "./dist/sidebuddy.css"
+    "./styles.css": "./dist/web_agent.css"
   },
   "engines": {
     "node": ">=22"
