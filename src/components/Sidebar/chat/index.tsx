@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import ChatList from './ChatList'
 import { SidebarInput } from './ChatInput'
-import { useChatCompletion } from '../../../hooks/useChatCompletion'
-import { SYSTEM_PROMPT } from '../../../config/prompts'
-import type { Settings } from '../../../config/settings'
+import { useChatCompletion } from '@/hooks/useChatCompletion'
+import { SYSTEM_PROMPT } from '@/config/prompts'
+import type { Settings } from '@/config/settings'
 
 interface ChatProps {
     settings: Settings

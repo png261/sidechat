@@ -4,13 +4,13 @@ import { GiMagicBroom } from 'react-icons/gi'
 import { IoSend } from 'react-icons/io5'
 import { HiHand } from 'react-icons/hi'
 import ChatHistory from './ChatHistory'
-import { useChatHistory } from '../../../hooks/useChatHistory'
+import { useChatHistory } from '@/hooks/useChatHistory'
 import WebPageContentToggle from './WebPageContentToggle'
 import ImageCaptureButton from './ImageCaptureButton'
 import {
     type MessageDraft,
     useMessageDraft,
-} from '../../../hooks/useMessageDraft'
+} from '@/hooks/useMessageDraft'
 import FilePreviewBar from './FilePreviewBar'
 
 interface SidebarInputProps {
