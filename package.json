@@ -1,5 +1,5 @@
 {
-  "name": "chatagent",
+  "name": "@png261/chatagent",
   "private": false,
   "version": "1.0.0",
   "packageManager": "pnpm@10.12.1",
