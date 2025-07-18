@@ -1,3 +1,5 @@
+"use client"
+
 import type { ReactMarkdownProps } from 'react-markdown/lib/ast-to-react'
 
 type TableType =

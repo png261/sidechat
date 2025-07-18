@@ -1,3 +1,5 @@
+"use client"
+
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import React from 'react'
 import { RiFileCopy2Line } from 'react-icons/ri'
@@ -19,7 +21,7 @@ const InsertPromptToDraftButton = ({
             <DropdownMenu.Trigger asChild>
                 <button
                     type="button"
-                    className="cdx-bg-neutral-300 cdx-text-neutral-500 dark:cdx-text-neutral-200 dark:cdx-bg-neutral-800 cdx-p-1.5 cdx-rounded"
+                    className="bg-neutral-300 text-neutral-500 dark:text-neutral-200 dark:bg-neutral-800 p-1.5 rounded"
                 >
                     <RiFileCopy2Line size={18} />
                 </button>
@@ -27,14 +29,14 @@ const InsertPromptToDraftButton = ({
             <DropdownMenu.Portal>
                 <DropdownMenu.Content
                     style={{ zIndex: 2147483647 }}
-                    className="cdx-flex cdx-flex-col cdx-min-w-[150px] cdx-gap-2 cdx-backdrop-blur-sm !cdx-font-sans cdx-m-2 cdx-bg-neutral-50 cdx-shadow-md cdx-p-2 cdx-rounded dark:cdx-bg-neutral-800 cdx-text-neutral-800 dark:cdx-text-neutral-100"
+                    className="flex flex-col min-w-[150px] gap-2 backdrop-blur-sm !font-sans m-2 bg-neutral-50 shadow-md p-2 rounded dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100"
                 >
                     <DropdownMenu.Group>
                         {prompts
                             .filter((i) => !i.prompt)
                             .map((item) => (
                                 <React.Fragment key={item.id}>
-                                    <DropdownMenu.Label className="cdx-text-[10px] cdx-m-1 cdx-text-neutral-500 cdx-uppercase">
+                                    <DropdownMenu.Label className="text-[10px] m-1 text-neutral-500 uppercase">
                                         {item.name}
                                     </DropdownMenu.Label>
                                     {item.children?.map((item) => (
@@ -48,7 +50,7 @@ const InsertPromptToDraftButton = ({
                             ))}
 
                         {noCategoryPrompts.length > 0 && (
-                            <DropdownMenu.Label className="cdx-text-[10px] cdx-m-1 cdx-text-neutral-500 cdx-uppercase">
+                            <DropdownMenu.Label className="text-[10px] m-1 text-neutral-500 uppercase">
                                 Uncategorized
                             </DropdownMenu.Label>
                         )}

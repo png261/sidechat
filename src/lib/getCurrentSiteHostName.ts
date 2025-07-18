@@ -1,9 +1,8 @@
-export const getCurrentSiteHostName = (): Promise<string> =>
-  new Promise((resolve) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tab = tabs[0] as any
-      const url = tab.url
-      const title = new URL(url!).hostname
-      resolve(title)
-    })
-  })
+/**
+ * Get the current site's hostname (e.g., "example.com").
+ * This works in any standard browser environment (not a Chrome Extension).
+ */
+export const getCurrentSiteHostName = (): Promise<string> => {
+    return Promise.resolve(window.location.hostname)
+}
+

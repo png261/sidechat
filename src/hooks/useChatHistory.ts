@@ -9,9 +9,6 @@ interface ChatHistory {
     updatedAt: string
 }
 
-/**
- * Replaces Jotai atom version using localStorage
- */
 export const useChatHistory = () => {
     const [history, setHistory] = useStorage<ChatHistory[]>('HISTORY', [])
     const [currentChatId, setCurrentChatId] = useStorage<string | null>('CURRENT_CHAT_ID', null)

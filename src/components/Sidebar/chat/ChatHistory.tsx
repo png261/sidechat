@@ -1,3 +1,5 @@
+"use client"
+
 import { useChatHistory } from '@/hooks/useChatHistory'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { RiAddLine, RiCloseCircleFill, RiTimeLine } from 'react-icons/ri'
@@ -29,42 +31,42 @@ const ChatHistory = () => {
     return (
         <div>
             <DropdownMenu.Root>
-                <DropdownMenu.Trigger className="cdx-flex cdx-items-center cdx-gap-1 cdx-text-neutral-500 dark:cdx-bg-neutral-900 cdx-bg-neutral-200 cdx-border cdx-rounded-md cdx-border-neutral-400/30 dark:cdx-border-neutral-500/30 cdx-py-1 cdx-px-3">
-                    <RiTimeLine size={18} className="cdx-flex-shrink-0" /> Lịch sử
+                <DropdownMenu.Trigger className="flex items-center gap-1 text-neutral-500 dark:bg-neutral-900 bg-neutral-200 border rounded-md border-neutral-400/30 dark:border-neutral-500/30 py-1 px-3">
+                    <RiTimeLine size={18} className="flex-shrink-0" /> Lịch sử
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content
                     side="top"
-                    className="cdx-max-w-xs cdx-mr-3 cdx-w-[280px] dark:cdx-bg-neutral-900 cdx-bg-neutral-200 cdx-border cdx-border-neutral-400/30 dark:cdx-border-neutral-500/30 cdx-rounded-lg cdx-mb-1.5 cdx-pb-3 cdx-overflow-hidden focus:outline-none"
+                    className="max-w-xs mr-3 w-[280px] dark:bg-neutral-900 bg-neutral-200 border border-neutral-400/30 dark:border-neutral-500/30 rounded-lg mb-1.5 pb-3 overflow-hidden focus:outline-none"
                 >
                     <div>
-                        <div className="cdx-flex cdx-justify-between cdx-items-center cdx-p-3 cdx-border-b-[#E5E7EB] cdx-border-b dark:cdx-border-b-[#2F2F2F]">
-                            <h1 className="cdx-text-lg cdx-font-bold cdx-text-[#5A5A5A] dark:cdx-text-[#E3E3E3]">
+                        <div className="flex justify-between items-center p-3 border-b-[#E5E7EB] border-b dark:border-b-[#2F2F2F]">
+                            <h1 className="text-lg font-bold text-[#5A5A5A] dark:text-[#E3E3E3]">
                                 Lịch sử
                             </h1>
                             <button
                                 type="button"
-                                className="cdx-flex cdx-items-center cdx-text-white cdx-bg-[#3B82F6] cdx-gap-1.5 cdx-px-2.5 cdx-py-1.5 cdx-rounded-md cdx-font-medium"
+                                className="flex items-center text-white bg-[#3B82F6] gap-1.5 px-2.5 py-1.5 rounded-md font-medium"
                                 onClick={handleCreateNewChat}
                             >
                                 <RiAddLine />
                                 Tạo mới
                             </button>
                         </div>
-                        <div className="cdx-max-h-96 cdx-overflow-y-auto">
+                        <div className="max-h-96 overflow-y-auto">
                             {history.map((chat, i) => (
                                 <DropdownMenu.Item
                                     key={chat.id}
                                     onSelect={() => {
                                         setCurrentChatId(chat.id)
                                     }}
-                                    className={`cdx-px-3 cdx-py-1.5 focus:cdx-outline-none focus-visible:cdx-bg-black/20 cdx-relative cdx-flex cdx-gap-3 cdx-justify-between cdx-items-center cdx-border-b dark:cdx-border-b-[#2F2F2F] ${i === history.length - 1
-                                            ? 'cdx-border-b-0'
-                                            : 'cdx-border-b-[#E5E7EB]'
-                                        } cdx-cursor-pointer`}
+                                    className={`px-3 py-1.5 focus:outline-none focus-visible:bg-black/20 relative flex gap-3 justify-between items-center border-b dark:border-b-[#2F2F2F] ${i === history.length - 1
+                                            ? 'border-b-0'
+                                            : 'border-b-[#E5E7EB]'
+                                        } cursor-pointer`}
                                 >
-                                    <div className="cdx-flex cdx-gap-2 cdx-justify-center cdx-items-center">
+                                    <div className="flex gap-2 justify-center items-center">
                                         <div
-                                            className="cdx-absolute cdx-left-0 cdx-h-full cdx-w-[3px] data-[current-chat]:cdx-bg-[#70A3F3]"
+                                            className="absolute left-0 h-full w-[3px] data-[current-chat]:bg-[#70A3F3]"
                                             data-current-chat={
                                                 currentChat?.id === chat.id || undefined
                                             }
@@ -78,17 +80,17 @@ const ChatHistory = () => {
                                         >
                                             <RiCloseCircleFill
                                                 size={14}
-                                                className="cdx-text-gray-500"
+                                                className="text-gray-500"
                                             />
                                         </button>
-                                        <div className="cdx-flex cdx-justify-between cdx-items-center cdx-gap-2">
+                                        <div className="flex justify-between items-center gap-2">
                                             <span
                                                 title={chat.name}
-                                                className="cdx-text-sm cdx-truncate cdx-max-w-[160px] dark:cdx-text-neutral-300 cdx-text-neutral-600"
+                                                className="text-sm truncate max-w-[160px] dark:text-neutral-300 text-neutral-600"
                                             >
                                                 {chat.name}
                                             </span>
-                                            <span className="cdx-text-[10px] cdx-text-neutral-500 dark:cdx-text-neutral-400">
+                                            <span className="text-[10px] text-neutral-500 dark:text-neutral-400">
                                                 {generateReadableRelativeDate(chat.createdAt)}
                                             </span>
                                         </div>

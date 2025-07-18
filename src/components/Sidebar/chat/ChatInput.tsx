@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { GiMagicBroom } from 'react-icons/gi'
@@ -21,6 +23,7 @@ interface SidebarInputProps {
     cancelRequest: () => void
     isWebpageContextOn: boolean
     isVisionModel: boolean
+    pageText: string
 }
 
 const MAX_MESSAGE_LENGTH = 10000
@@ -33,6 +36,7 @@ export function SidebarInput({
     cancelRequest,
     isWebpageContextOn,
     isVisionModel,
+    pageText
 }: SidebarInputProps) {
     const {
         messageDraft,
@@ -55,29 +59,22 @@ export function SidebarInput({
 
     const handleSubmit = async () => {
         let context: string | undefined
-        if (isWebpageContextOn) {
-            const pageContent = new Promise((resolve) => {
-                window.addEventListener('message', (event) => {
-                    const { action, payload } = event.data
-                    if (action === 'get-page-content') {
-                        resolve(payload)
-                    }
-                })
 
-                window.parent.postMessage({ action: 'get-page-content' }, '*')
-            })
-            context = (await pageContent) as string
+        if (isWebpageContextOn) {
+            context = pageText
         }
-        submitMessage(messageDraft, isWebpageContextOn ? context : undefined)
+
+        submitMessage(messageDraft, context)
         resetMessageDraft()
     }
+
 
     const sendButton = (
         <button
             type="button"
             disabled={loading}
             onClick={handleSubmit}
-            className="cdx-flex cdx-gap-2 disabled:cdx-bg-slate-500 disabled:cdx-text-slate-400 cdx-items-center cdx-bg-blue-500 hover:cdx-bg-blue-700 cdx-text-white cdx-py-2 cdx-px-4 cdx-rounded"
+            className="flex gap-2 disabled:bg-slate-500 disabled:text-slate-400 items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
         >
             <span>Gửi</span> <IoSend size={10} />
         </button>
@@ -87,32 +84,32 @@ export function SidebarInput({
         <button
             type="button"
             onClick={cancelRequest}
-            className="cdx-flex cdx-gap-2 disabled:cdx-bg-slate-500 disabled:cdx-text-slate-400 cdx-items-center cdx-bg-red-500 hover:cdx-bg-red-700 cdx-text-white cdx-py-2 cdx-px-4 cdx-rounded"
+            className="flex gap-2 disabled:bg-slate-500 disabled:text-slate-400 items-center bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded"
         >
             <HiHand size={18} /> <span>Dừng</span>
         </button>
     )
 
     return (
-        <div className="cdx-fixed cdx-bottom-0 cdx-left-0 cdx-right-0 cdx-flex cdx-flex-col ">
-            <div className="cdx-flex cdx-mx-3 cdx-items-center cdx-justify-between">
+        <div className="fixed bottom-0 left-0 right-0 flex flex-col">
+            <div className="flex mx-3 items-center justify-between">
                 {!chatIsEmpty ? (
                     <button
                         type="button"
                         onClick={clearMessages}
-                        className="cdx-rounded-full cdx-h-8 cdx-w-8 cdx-grid cdx-place-items-center cdx-text-center cdx-bg-blue-500 hover:cdx-bg-blue-700 cdx-text-white"
+                        className="rounded-full h-8 w-8 grid place-items-center text-center bg-blue-500 hover:bg-blue-700 text-white"
                     >
                         <GiMagicBroom size={16} className="mx-auto" />
                     </button>
                 ) : (
                     <div />
                 )}
-                <div className="cdx-flex cdx-gap-2">
+                <div className="flex gap-2">
                     {(history.length || !chatIsEmpty) && <ChatHistory />}
                 </div>
             </div>
 
-            <div className="cdx-m-2 cdx-rounded-md cdx-border dark:cdx-border-neutral-800 cdx-border-neutral-300 dark:cdx-bg-neutral-900/90 cdx-bg-neutral-200/90 focus:cdx-outline-none focus:cdx-ring-2 focus:cdx-ring-blue-900 focus:cdx-ring-opacity-50">
+            <div className="m-2 rounded-md border dark:border-neutral-800 border-neutral-300 dark:bg-neutral-900/90 bg-neutral-200/90 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-opacity-50">
                 {messageDraft.files.length > 0 && (
                     <FilePreviewBar
                         files={messageDraft.files}
@@ -125,7 +122,7 @@ export function SidebarInput({
                     placeholder="Nhập câu hỏi của bạn ở đây..."
                     value={messageDraft.text}
                     disabled={loading}
-                    className="cdx-p-3 cdx-w-full focus:!cdx-outline-none placeholder:cdx-text-neutral-500 cdx-text-sm cdx-resize-none cdx-max-h-96 cdx-pb-0 cdx-bg-transparent !cdx-border-none"
+                    className="p-3 w-full focus:!outline-none placeholder:text-neutral-500 text-sm resize-none max-h-96 pb-0 bg-transparent !border-none"
                     onChange={(e) => {
                         e.preventDefault()
                         setMessageDraftText(e.target.value)
@@ -137,13 +134,13 @@ export function SidebarInput({
                         }
                     }}
                 />
-                <div className="cdx-flex cdx-justify-between cdx-items-center cdx-p-3">
-                    <div className="cdx-flex cdx-gap-2">
+                <div className="flex justify-between items-center p-3">
+                    <div className="flex gap-2">
                         {isVisionModel && (
                             <ImageCaptureButton addMessageDraftFile={addMessageDraftFile} />
                         )}
                     </div>
-                    <div className="cdx-flex cdx-items-center cdx-justify-center cdx-gap-4">
+                    <div className="flex items-center justify-center gap-4">
                         <WebPageContentToggle />
                         {!delayedLoading ? sendButton : stopButton}
                     </div>
@@ -152,3 +149,4 @@ export function SidebarInput({
         </div>
     )
 }
+

@@ -1,3 +1,5 @@
+"use client"
+
 import type { CodeProps } from 'react-markdown/lib/ast-to-react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import {
@@ -16,7 +18,7 @@ const CodeBlock = (props: CodeProps) => {
   const { children, className, inline } = props
   const match = /language-(\w+)/.exec(className || '')
   const language = match ? match[1] : 'javascript'
-  const modClass = `${className} cdx-text-sm`
+  const modClass = `${className} text-sm`
   return !inline ? (
     <SyntaxHighlighter
       className={modClass}
@@ -28,7 +30,7 @@ const CodeBlock = (props: CodeProps) => {
     </SyntaxHighlighter>
   ) : (
     <code
-      className={`${modClass} cdx-bg-gray-200 dark:cdx-bg-gray-700 cdx-outline-gray-200 dark:cdx-outline-gray-700 cdx-rounded cdx-outline cdx-break-words`}
+      className={`${modClass} bg-gray-200 dark:bg-gray-700 outline-gray-200 dark:outline-gray-700 rounded outline break-words`}
     >
       {children}
     </code>

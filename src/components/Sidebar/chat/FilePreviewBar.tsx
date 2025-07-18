@@ -1,3 +1,5 @@
+'use client'
+
 import { RiCloseLine } from 'react-icons/ri'
 import type { MessageFile } from '@/hooks/useMessageDraft'
 
@@ -10,7 +12,7 @@ const FilePreviewBar = ({ files, removeFile }: FilePreviewBarProps) => {
     if (files.length === 0) return null
 
     return (
-        <div className="cdx-flex cdx-gap-2 cdx-m-2">
+        <div className="flex gap-2 m-2">
             {files.map((file) => {
                 const handlePreviewImageClick = async () => {
                     if (typeof window === 'undefined') return
@@ -34,23 +36,23 @@ const FilePreviewBar = ({ files, removeFile }: FilePreviewBarProps) => {
                 }
 
                 return (
-                    <div key={file.id} className="cdx-flex cdx-relative">
+                    <div key={file.id} className="flex relative">
                         <button
                             type="button"
                             onClick={handlePreviewImageClick}
-                            className="cdx-block cdx-flex-grow"
+                            className="block flex-grow"
                         >
                             <img
                                 src={file.src}
                                 alt="preview"
-                                className="cdx-w-14 cdx-h-14 cdx-object-contain cdx-rounded dark:cdx-bg-neutral-800 cdx-bg-neutral-400"
+                                className="w-14 h-14 object-contain rounded dark:bg-neutral-800 bg-neutral-400"
                             />
                         </button>
                         {removeFile && (
                             <button
                                 onClick={() => removeFile(file.id)}
                                 type="button"
-                                className="cdx-absolute cdx-top-0.5 cdx-right-0.5 cdx-bg-black/30 cdx-rounded-full cdx-text-neutral-500 dark:cdx-text-neutral-200 cdx-ml-2"
+                                className="absolute top-0.5 right-0.5 bg-black/30 rounded-full text-neutral-500 dark:text-neutral-200 ml-2"
                             >
                                 <RiCloseLine size={16} />
                             </button>

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect } from 'react'
 import ChatList from './ChatList'
 import { SidebarInput } from './ChatInput'
@@ -7,9 +9,10 @@ import type { Settings } from '@/config/settings'
 
 interface ChatProps {
     settings: Settings
+    pageText: string
 }
 
-const Chat = ({ settings }: ChatProps) => {
+const Chat = ({ settings, pageText }: ChatProps) => {
     const {
         messages,
         submitQuery,
@@ -58,6 +61,7 @@ const Chat = ({ settings }: ChatProps) => {
                 clearMessages={clearMessages}
                 cancelRequest={cancelRequest}
                 isWebpageContextOn={settings.general.webpageContext}
+                pageText={pageText}
                 isVisionModel={true}
             />
         </>

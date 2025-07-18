@@ -1,3 +1,5 @@
+"use client"
+
 import { RiScreenshot2Line } from 'react-icons/ri'
 
 interface ImageCaptureButtonProps {
@@ -24,7 +26,7 @@ const ImageCaptureButton = ({
     <button
       onClick={handleScreenshotClick}
       type="button"
-      className="cdx-bg-neutral-300 cdx-text-neutral-500 dark:cdx-text-neutral-200 dark:cdx-bg-neutral-800 cdx-p-1.5 cdx-rounded"
+      className="bg-neutral-300 text-neutral-500 dark:text-neutral-200 dark:bg-neutral-800 p-1.5 rounded"
     >
       <RiScreenshot2Line size={18} />
     </button>

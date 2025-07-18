@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef } from 'react'
 import {
     RiCloseLine,
@@ -55,14 +57,14 @@ const ChatList = ({
     return (
         <div
             ref={containerRef}
-            className="cdx-h-[calc(100vh-200px)] cdx-text-sm cdx-overflow-y-auto cdx-pb-12 cdx-break-words"
+            className="h-[calc(100vh-200px)] text-sm overflow-y-auto pb-12 break-words"
         >
             {filteredMsgs.length < 1 ? (
-                <div className="cdx-mt-10 cdx-text-center">
-                    <h1 className="cdx-text-xl cdx-text-gray-500 dark:cdx-text-gray-400">
+                <div className="mt-10 text-center">
+                    <h1 className="text-xl text-gray-500 dark:text-gray-400">
                         Bắt đầu cuộc trò chuyện 🎉
                     </h1>
-                    <p className="cdx-text-gray-500 dark:cdx-text-gray-400 cdx-mt-1 cdx-leading-tight cdx-font-light">
+                    <p className="text-gray-500 dark:text-gray-400 mt-1 leading-tight font-light">
                         Nhập câu hỏi của bạn và bấm gửi
                     </p>
                 </div>
@@ -72,14 +74,14 @@ const ChatList = ({
                     .map((msg, i) => (
                         <div
                             data-user={msg.role === ChatRole.USER ? 'true' : undefined}
-                            className="markdown cdx-group cdx-relative cdx-px-4 cdx-py-2 data-[user]:cdx-border-l-2 cdx-border-blue-400 data-[user]:cdx-bg-black/5 data-[user]:dark:cdx-bg-neutral-900/50 cdx-max-w-[400px]"
+                            className="markdown group relative px-4 py-2 data-[user]:border-l-2 border-blue-400 data-[user]:bg-black/5 data-[user]:dark:bg-neutral-900/50 max-w-[400px]"
                             key={`${msg.timestamp}-${i}`}
                         >
                             {msg.role === ChatRole.USER && (
                                 <button
                                     type="button"
                                     onClick={() => removeMessagePair(msg.timestamp)}
-                                    className="cdx-absolute group-hover:cdx-visible cdx-invisible cdx-right-2 cdx-top-2 cdx-p-0.5 cdx-bg-black/20 cdx-rounded"
+                                    className="absolute group-hover:visible invisible right-2 top-2 p-0.5 bg-black/20 rounded"
                                 >
                                     <RiCloseLine />
                                 </button>
@@ -88,7 +90,7 @@ const ChatList = ({
                                 <button
                                     type="button"
                                     onClick={() => handleCopyMessage(formatContent(msg.content))}
-                                    className="cdx-absolute group-hover:cdx-visible cdx-invisible cdx-right-2 cdx-top-2 cdx-p-0.5 cdx-bg-black/20 cdx-rounded"
+                                    className="absolute group-hover:visible invisible right-2 top-2 p-0.5 bg-black/20 rounded"
                                 >
                                     <RiFileCopyLine />
                                 </button>
@@ -108,17 +110,17 @@ const ChatList = ({
                     ))
             )}
             {messages[messages.length - 1]?.role === ChatRole.USER && (
-                <div className="cdx-text-neutral-500">
+                <div className="text-neutral-500">
                     {generating && !error && (
-                        <div className="cdx-animate-pulse cdx-mt-4 cdx-flex cdx-justify-center cdx-items-center cdx-gap-2">
-                            <RiLoader4Line className="cdx-animate-spin" />
+                        <div className="animate-pulse mt-4 flex justify-center items-center gap-2">
+                            <RiLoader4Line className="animate-spin" />
                             <span>Generating</span>
                         </div>
                     )}
                     {error && (
-                        <div className="cdx-p-4 cdx-flex cdx-items-center cdx-gap-4 cdx-bg-red-500/10">
+                        <div className="p-4 flex items-center gap-4 bg-red-500/10">
                             <RiErrorWarningLine
-                                className="cdx-text-red-500 cdx-flex-shrink-0"
+                                className="text-red-500 flex-shrink-0"
                                 size={20}
                             />
                             <span>{error.message}</span>
