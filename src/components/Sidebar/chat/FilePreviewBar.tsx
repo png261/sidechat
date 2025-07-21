@@ -15,24 +15,34 @@ const FilePreviewBar = ({ files, removeFile }: FilePreviewBarProps) => {
         <div className="flex gap-2 m-2">
             {files.map((file) => {
                 const handlePreviewImageClick = async () => {
-                    if (typeof window === 'undefined') return
+                    if (typeof window === 'undefined' || typeof document === 'undefined') return
 
                     const image = new Image()
                     image.src = file.src
                     image.style.maxWidth = '100vw'
                     image.style.maxHeight = '100vh'
 
-                    const newTab = window.open()
-                    if (!newTab || !newTab.document) return
+                    try {
+                        await new Promise<void>((resolve, reject) => {
+                            image.onload = () => resolve()
+                            image.onerror = () => reject(new Error('Image failed to load'))
+                        })
 
-                    const body = newTab.document.body
-                    body.innerHTML = image.outerHTML
-                    body.style.margin = '0'
-                    body.style.display = 'grid'
-                    body.style.placeItems = 'center'
-                    body.style.height = '100vh'
-                    body.style.width = '100vw'
-                    body.style.backgroundColor = '#262626'
+                        const newTab = window.open()
+                        if (!newTab || !newTab.document || !newTab.document.body) return
+
+                        const body = newTab.document.body
+                        body.innerHTML = ''
+                        body.appendChild(image)
+                        body.style.margin = '0'
+                        body.style.display = 'grid'
+                        body.style.placeItems = 'center'
+                        body.style.height = '100vh'
+                        body.style.width = '100vw'
+                        body.style.backgroundColor = '#262626'
+                    } catch (err) {
+                        console.error('Failed to load image:', err)
+                    }
                 }
 
                 return (

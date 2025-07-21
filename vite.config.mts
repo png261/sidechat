@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts'
 import { configDefaults, defineConfig } from 'vitest/config'
 import { name } from './package.json'
 import tailwindcss from '@tailwindcss/vite'
+import autoprefixer from 'autoprefixer'
 
 const app = async (): Promise<UserConfigExport> => {
     const formattedName = name.match(/[^/]+$/)?.[0] ?? name
@@ -25,9 +26,9 @@ const app = async (): Promise<UserConfigExport> => {
         build: {
             lib: {
                 entry: path.resolve(__dirname, 'src/index.ts'),
-                name: formattedName,
+                name: "chatagent",
                 formats: ['es', 'umd'],
-                fileName: format => `${formattedName}.${format}.js`,
+                fileName: format => `index.${format}.js`,
             },
             rollupOptions: {
                 external: ['react', 'react/jsx-runtime', 'react-dom'],
@@ -39,15 +40,15 @@ const app = async (): Promise<UserConfigExport> => {
                     },
                 },
             },
+            //Generates sourcemaps for the built files,
+            //aiding in debugging.
+            sourcemap: false,
+            //Clears the output directory before building.
+            emptyOutDir: true,
         },
-        test: {
-            globals: true,
-            environment: 'jsdom',
-            coverage: {
-                exclude: [
-                    ...(configDefaults.coverage.exclude ?? []),
-                    '**/*.config.js',
-                ],
+        css: {
+            postcss: {
+                plugins: [autoprefixer()],
             },
         },
     })

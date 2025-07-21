@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import type { Settings } from '@/config/settings'
-import '@/tailwind/theme.css'
 
 export interface ChatAgentProps {
     children: React.ReactNode
