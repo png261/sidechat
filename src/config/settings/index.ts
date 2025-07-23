@@ -15,26 +15,12 @@ export enum Mode {
 
 export type Settings = {
     chat: {
-        openAIKey: string | null
-        model: string | null
-        mode: Mode
-        openAiBaseUrl: string | null
+        apiKey: string
+        apiUrl: string
+        model: string
     }
     general: {
         theme: ThemeOptions
         webpageContext: boolean
     }
-}
-
-export const defaultSettings: Settings = {
-    chat: {
-        openAIKey: null,
-        model: null,
-        mode: Mode.BALANCED,
-        openAiBaseUrl: null,
-    },
-    general: {
-        theme: ThemeOptions.SYSTEM,
-        webpageContext: false,
-    },
 }

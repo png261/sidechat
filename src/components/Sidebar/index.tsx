@@ -1,6 +1,7 @@
 'use client'
 import Chat from './chat'
 import type { Settings } from '@/config/settings'
+import './style.css' // Make sure to import the CSS file
 
 interface Props {
     settings: Settings
@@ -9,7 +10,7 @@ interface Props {
 
 export function Sidebar({ settings, pageText }: Props) {
     return (
-        <div className="flex backdrop-blur-sm flex-col min-h-screen shadow-md border-l dark:!text-white dark:border-neutral-800 border-neutral-200 top-0 right-0 w-[400px] h-full dark:bg-neutral-800/90 bg-neutral-100/90">
+        <div className="sidebar">
             <Chat settings={settings} pageText={pageText} />
         </div>
     )

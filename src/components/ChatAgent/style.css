@@ -1,0 +1,8 @@
+.chat-agent-wrapper {
+    display: flex;
+}
+
+.chat-agent-content {
+    flex: 1;
+}
+

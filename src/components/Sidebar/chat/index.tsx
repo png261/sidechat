@@ -23,10 +23,9 @@ const Chat = ({ settings, pageText }: ChatProps) => {
         error,
     } = useChatCompletion({
         model: settings.chat.model!,
-        apiKey: settings.chat.openAIKey!,
-        mode: settings.chat.mode,
+        apiKey: settings.chat.apiKey!,
+        apiUrl: settings.chat.apiUrl,
         systemPrompt: SYSTEM_PROMPT,
-        baseURL: settings.chat.openAiBaseUrl || '',
     })
 
     useEffect(() => {

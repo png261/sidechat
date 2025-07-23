@@ -4,8 +4,6 @@ import type { UserConfigExport } from 'vite'
 import dts from 'vite-plugin-dts'
 import { configDefaults, defineConfig } from 'vitest/config'
 import { name } from './package.json'
-import tailwindcss from '@tailwindcss/vite'
-import autoprefixer from 'autoprefixer'
 
 const app = async (): Promise<UserConfigExport> => {
     const formattedName = name.match(/[^/]+$/)?.[0] ?? name
@@ -13,7 +11,6 @@ const app = async (): Promise<UserConfigExport> => {
     return defineConfig({
         plugins: [
             react(),
-            tailwindcss(),
             dts({
                 insertTypesEntry: true,
             }),
@@ -26,7 +23,7 @@ const app = async (): Promise<UserConfigExport> => {
         build: {
             lib: {
                 entry: path.resolve(__dirname, 'src/index.ts'),
-                name: "chatagent",
+                name: "sidechat",
                 formats: ['es', 'umd'],
                 fileName: format => `index.${format}.js`,
             },
@@ -45,11 +42,6 @@ const app = async (): Promise<UserConfigExport> => {
             sourcemap: false,
             //Clears the output directory before building.
             emptyOutDir: true,
-        },
-        css: {
-            postcss: {
-                plugins: [autoprefixer()],
-            },
         },
     })
 }

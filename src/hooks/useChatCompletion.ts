@@ -1,33 +1,27 @@
-import endent from 'endent'
-import { ChatOpenAI } from '@langchain/openai'
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import endent from 'endent';
 import {
     AIMessage,
     HumanMessage,
     SystemMessage,
-} from '@langchain/core/messages'
-import { useMemo, useState } from 'react'
-import type { Mode } from '../config/settings'
-import { getMatchedContent } from '../lib/getMatchedContent'
-import { ChatRole, useCurrentChat } from './useCurrentChat'
-import type { MessageDraft } from './useMessageDraft'
+} from '@langchain/core/messages';
+import { useState } from 'react';
+import { ChatRole, useCurrentChat } from './useCurrentChat';
+import type { MessageDraft } from './useMessageDraft';
 
 interface UseChatCompletionProps {
-    model: string
-    apiKey: string
-    mode: Mode
-    systemPrompt: string
-    baseURL: string
+    model: string;
+    apiKey: string;
+    apiUrl: string;
+    systemPrompt: string;
 }
 
-let controller: AbortController
+let controller: AbortController;
 
 export const useChatCompletion = ({
     model,
     apiKey,
-    mode,
+    apiUrl,
     systemPrompt,
-    baseURL,
 }: UseChatCompletionProps) => {
     const {
         messages,
@@ -36,100 +30,118 @@ export const useChatCompletion = ({
         commitToStoredMessages,
         clearMessages,
         removeMessagePair,
-    } = useCurrentChat()
-    const [generating, setGenerating] = useState(false)
-    const [error, setError] = useState<Error | null>(null)
+    } = useCurrentChat();
 
-    const llm = useMemo(() => {
-        return new ChatGoogleGenerativeAI({
-            streaming: true,
-            apiKey: apiKey,
-            model: "gemini-2.0-flash",
-            temperature: Number(mode),
-        })
-    }, [apiKey, model, mode, baseURL])
-
-    const previousMessages = messages.map((msg) => {
-        switch (msg.role) {
-            case ChatRole.ASSISTANT:
-                return new AIMessage(msg.content)
-            case ChatRole.SYSTEM:
-                return new SystemMessage(msg.content)
-            case ChatRole.USER:
-                return new HumanMessage(msg.content)
-        }
-    })
+    const [generating, setGenerating] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
 
     const submitQuery = async (message: MessageDraft, context?: string) => {
-        await addNewMessage(ChatRole.USER, message)
-        controller = new AbortController()
+        // Prevent duplicate submissions while generating
+        if (generating) return;
+
+        // Add user message only once
+        await addNewMessage(ChatRole.USER, message);
+        controller = new AbortController();
         const options = {
             signal: controller.signal,
             callbacks: [{ handleLLMNewToken: updateAssistantMessage }],
-        }
+        };
 
-        setError(null)
-        setGenerating(true)
+        setError(null);
+        setGenerating(true);
 
         try {
-            let matchedContext: string | undefined
-            if (context) {
-                matchedContext = await getMatchedContent(
-                    message.text,
-                    context,
-                    apiKey,
-                    baseURL,
-                )
-            }
-
-            const expandedQuery = matchedContext
+            const expandedQuery = context
                 ? endent`
-      ### Context
-      ${matchedContext}
-      ### Question:
-      ${message.text}
-    `
-                : message.text
+            ### Context
+            ${context}
+            ### Question:
+            ${message.text}
+          `
+                : message.text;
 
-            const messages = [
+            // Construct messages array with system prompt and current message
+            const messagesToSend = [
                 new SystemMessage(systemPrompt),
-                ...previousMessages,
+                ...messages.map((msg) => {
+                    switch (msg.role) {
+                        case ChatRole.ASSISTANT:
+                            return new AIMessage(msg.content);
+                        case ChatRole.SYSTEM:
+                            return new SystemMessage(msg.content);
+                        case ChatRole.USER:
+                            return new HumanMessage(msg.content);
+                        default:
+                            return new HumanMessage(msg.content);
+                    }
+                }),
                 new HumanMessage({
                     content:
                         message.files.length > 0
                             ? [
                                 { type: 'text', text: expandedQuery },
-                                ...(message.files.length > 0
-                                    ? await Promise.all(
-                                        message.files.map(async (file) => {
-                                            return {
-                                                type: 'image_url',
-                                                image_url: { url: file.src },
-                                            } as const
-                                        }),
+                                ...(
+                                    await Promise.all(
+                                        message.files.map(async (file) => ({
+                                            type: 'image_url',
+                                            image_url: { url: file.src },
+                                        })),
                                     )
-                                    : []),
+                                ),
                             ]
                             : expandedQuery,
                 }),
-            ]
+            ];
 
-            console.log(JSON.stringify(messages, null, 2))
+            const response = await fetch(`${apiUrl}/api/chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    model,
+                    messages: messagesToSend.map((m) => {
+                        if (m instanceof SystemMessage) {
+                            return { role: 'system', content: m.content };
+                        } else if (m instanceof HumanMessage) {
+                            return { role: 'user', content: m.content };
+                        } else if (m instanceof AIMessage) {
+                            return { role: 'assistant', content: m.content };
+                        } else {
+                            return { role: 'user', content: String(m) };
+                        }
+                    }),
+                }),
+                signal: options.signal,
+            });
 
-            await llm.invoke(messages, options)
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API Error ${response.status}: ${errorText}`);
+            }
+
+            const data = await response.json();
+            const content = data?.choices?.[0]?.message?.content || 'No response.';
+
+            // Simulate streaming without splitting into tokens
+            await new Promise((resolve) => setTimeout(() => {
+                options.callbacks?.[0].handleLLMNewToken(content);
+                resolve(null);
+            }, 60));
         } catch (e) {
-            setError(e as Error)
+            setError(e as Error);
         } finally {
-            commitToStoredMessages()
-            setGenerating(false)
+            commitToStoredMessages();
+            setGenerating(false);
         }
-    }
+    };
 
     const cancelRequest = () => {
-        controller.abort()
-        commitToStoredMessages()
-        setGenerating(false)
-    }
+        controller?.abort();
+        commitToStoredMessages();
+        setGenerating(false);
+    };
 
     return {
         messages,
@@ -139,5 +151,5 @@ export const useChatCompletion = ({
         clearMessages,
         removeMessagePair,
         error,
-    }
-}
+    };
+};

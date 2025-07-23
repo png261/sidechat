@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Sidebar } from '../Sidebar'
+import './style.css'
 import type { Settings } from '@/config/settings'
 
 export interface ChatAgentProps {
@@ -12,6 +13,7 @@ export interface ChatAgentProps {
 export const ChatAgent = ({ children, settings }: ChatAgentProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
     const [pageText, setPageText] = useState<string>('')
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     useEffect(() => {
         if (contentRef.current) {
@@ -21,11 +23,22 @@ export const ChatAgent = ({ children, settings }: ChatAgentProps) => {
     }, [children])
 
     return (
-        <div className="chat-agent-wrapper p-4 rounded-xl shadow bg-white dark:bg-neutral-900 flex">
-            <Sidebar settings={settings} pageText={pageText} />
-            <div className="chat-agent-content flex-1 p-4" ref={contentRef}>
+        <div className="chat-agent-wrapper">
+            <div className="chat-agent-content" ref={contentRef}>
                 {children}
             </div>
+
+            <button
+                className="sidebar-toggle-button"
+                onClick={() => setIsSidebarOpen(prev => !prev)}
+                aria-label="Toggle Sidebar"
+            >
+                ☰
+            </button>
+
+            {isSidebarOpen && (
+                <Sidebar settings={settings} pageText={pageText} />
+            )}
         </div>
     )
 }
