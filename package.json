@@ -1,10 +1,11 @@
 {
   "name": "sidechat",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+     "@png261:registry": "https://npm.pkg.github.com"
   },
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "packageManager": "pnpm@10.12.1",
   "repository": {
     "type": "git",
