@@ -1,20 +1,15 @@
-import { ChatAgent } from "@/components/ChatAgent"
+import { SideChat } from "@/components/SideChat"
 
 const settings = {
-    chat: {
-        apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzMzMTg4LWZhY2QtNGFhZS1hNWVkLTc1ZDBhOTZhODVkOSJ9.0LKP3SKl_F0mhDy_Wr19szrqzbvI_YjUeCipxGdEgfA",
-        apiUrl: "https://chat.hoclieu.vn",
-        model: "gpt-4",
-    },
-    general: {
-        webpageContext: true
-    }
+    apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzMzMTg4LWZhY2QtNGFhZS1hNWVkLTc1ZDBhOTZhODVkOSJ9.0LKP3SKl_F0mhDy_Wr19szrqzbvI_YjUeCipxGdEgfA",
+    apiUrl: "https://chat.hoclieu.vn",
+    model: "gpt-4",
 }
 
 
 export default function Home() {
     return (
-        <ChatAgent settings={settings}>
+        <SideChat settings={settings}>
             <div>
                 <h2>Bài học Địa lý lớp 9</h2>
 
@@ -78,7 +73,7 @@ export default function Home() {
                     </p>
                 </section>
             </div>
-        </ChatAgent>
+        </SideChat>
     );
 }
 

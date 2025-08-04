@@ -11,7 +11,6 @@ import {
     type MessageDraft,
     useMessageDraft,
 } from '@/hooks/useMessageDraft'
-import FilePreviewBar from './FilePreviewBar'
 
 interface SidebarInputProps {
     loading: boolean
@@ -19,7 +18,6 @@ interface SidebarInputProps {
     clearMessages: () => void
     chatIsEmpty: boolean
     cancelRequest: () => void
-    isWebpageContextOn: boolean
     isVisionModel: boolean
     pageText: string
 }
@@ -32,7 +30,6 @@ export function SidebarInput({
     clearMessages,
     chatIsEmpty,
     cancelRequest,
-    isWebpageContextOn,
     isVisionModel,
     pageText
 }: SidebarInputProps) {
@@ -40,8 +37,6 @@ export function SidebarInput({
         messageDraft,
         setMessageDraftText,
         resetMessageDraft,
-        addMessageDraftFile,
-        removeMessageDraftFile,
     } = useMessageDraft()
     const [delayedLoading, setDelayedLoading] = useState(false)
     const { history } = useChatHistory()
@@ -56,11 +51,7 @@ export function SidebarInput({
     }, [loading])
 
     const handleSubmit = async () => {
-        let context: string | undefined
-        if (isWebpageContextOn) {
-            context = pageText
-        }
-        submitMessage(messageDraft, context)
+        submitMessage(messageDraft, pageText)
         resetMessageDraft()
     }
 
@@ -105,12 +96,6 @@ export function SidebarInput({
             </div>
 
             <div className="input-container">
-                {messageDraft.files.length > 0 && (
-                    <FilePreviewBar
-                        files={messageDraft.files}
-                        removeFile={removeMessageDraftFile}
-                    />
-                )}
                 <TextareaAutosize
                     minRows={2}
                     maxLength={MAX_MESSAGE_LENGTH}

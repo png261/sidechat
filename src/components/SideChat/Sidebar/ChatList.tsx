@@ -12,7 +12,6 @@ import rehypeRaw from 'rehype-raw'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import { type ChatMessage, ChatRole } from '@/hooks/useCurrentChat'
-import FilePreviewBar from './FilePreviewBar'
 import CodeBlock from './markdown-components/CodeBlock'
 import { Table } from './markdown-components/Table'
 
@@ -95,7 +94,6 @@ const ChatList = ({
                         >
                             {formatContent(msg.content)}
                         </ReactMarkdown>
-                        {msg.files && <FilePreviewBar files={msg.files} />}
                     </div>
                 ))
             )}

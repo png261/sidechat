@@ -1,5 +1,5 @@
-import { ChatAgent } from './components/ChatAgent'
+import { SideChat } from './components/SideChat'
 
 export {
-    ChatAgent
+    SideChat
 }

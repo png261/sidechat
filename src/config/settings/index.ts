@@ -14,13 +14,7 @@ export enum Mode {
 }
 
 export type Settings = {
-    chat: {
-        apiKey: string
-        apiUrl: string
-        model: string
-    }
-    general: {
-        theme: ThemeOptions
-        webpageContext: boolean
-    }
+    apiKey: string
+    apiUrl: string
+    model: string
 }

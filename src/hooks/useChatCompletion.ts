@@ -76,20 +76,7 @@ export const useChatCompletion = ({
                     }
                 }),
                 new HumanMessage({
-                    content:
-                        message.files.length > 0
-                            ? [
-                                { type: 'text', text: expandedQuery },
-                                ...(
-                                    await Promise.all(
-                                        message.files.map(async (file) => ({
-                                            type: 'image_url',
-                                            image_url: { url: file.src },
-                                        })),
-                                    )
-                                ),
-                            ]
-                            : expandedQuery,
+                    content: expandedQuery,
                 }),
             ];
 

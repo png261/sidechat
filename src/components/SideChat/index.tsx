@@ -1,16 +1,16 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Sidebar } from '../Sidebar'
+import Sidebar from './Sidebar'
 import './style.css'
 import type { Settings } from '@/config/settings'
 
-export interface ChatAgentProps {
+export interface SideChatProps {
     children: React.ReactNode
     settings: Settings
 }
 
-export const ChatAgent = ({ children, settings }: ChatAgentProps) => {
+export const SideChat = ({ children, settings }: SideChatProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
     const [pageText, setPageText] = useState<string>('')
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -22,22 +22,28 @@ export const ChatAgent = ({ children, settings }: ChatAgentProps) => {
         }
     }, [children])
 
+    const toggleSidebar = () => {
+        setIsSidebarOpen(prev => !prev)
+    }
+
     return (
         <div className="chat-agent-wrapper">
             <div className="chat-agent-content" ref={contentRef}>
                 {children}
             </div>
 
-            <button
-                className="sidebar-toggle-button"
-                onClick={() => setIsSidebarOpen(prev => !prev)}
-                aria-label="Toggle Sidebar"
-            >
-                ☰
-            </button>
+            {!isSidebarOpen && (
+                <button
+                    className="sidebar-open-button"
+                    onClick={toggleSidebar}
+                    aria-label="Toggle Sidebar"
+                >
+                    ☰
+                </button>
+            )}
 
             {isSidebarOpen && (
-                <Sidebar settings={settings} pageText={pageText} />
+                <Sidebar settings={settings} pageText={pageText} toggleSidebar={toggleSidebar} />
             )}
         </div>
     )
