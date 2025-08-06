@@ -12,7 +12,6 @@ interface UseChatCompletionProps {
     model: string;
     apiKey: string;
     apiUrl: string;
-    systemPrompt: string;
 }
 
 let controller: AbortController;
@@ -21,7 +20,6 @@ export const useChatCompletion = ({
     model,
     apiKey,
     apiUrl,
-    systemPrompt,
 }: UseChatCompletionProps) => {
     const {
         messages,
@@ -62,7 +60,6 @@ export const useChatCompletion = ({
 
             // Construct messages array with system prompt and current message
             const messagesToSend = [
-                new SystemMessage(systemPrompt),
                 ...messages.map((msg) => {
                     switch (msg.role) {
                         case ChatRole.ASSISTANT:

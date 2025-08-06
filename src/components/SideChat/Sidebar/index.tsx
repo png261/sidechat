@@ -1,12 +1,10 @@
-"use client"
+'use client'
 
 import React, { useEffect } from 'react'
 import ChatList from './ChatList'
 import { SidebarInput } from './ChatInput'
 import { useChatCompletion } from '@/hooks/useChatCompletion'
-import { SYSTEM_PROMPT } from '@/config/prompts'
 import type { Settings } from '@/config/settings'
-import "./style.css"
 
 interface ChatProps {
     settings: Settings
@@ -27,7 +25,6 @@ const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
         model: settings.model!,
         apiKey: settings.apiKey!,
         apiUrl: settings.apiUrl,
-        systemPrompt: SYSTEM_PROMPT,
     })
 
     useEffect(() => {
@@ -41,27 +38,34 @@ const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
             }
         }
         window.addEventListener('message', handleWindowMessage)
-
         return () => {
             window.removeEventListener('message', handleWindowMessage)
         }
     }, [submitQuery])
 
     return (
-        <div className="sidebar">
-            <button
-                className="sidebar-close-button"
-                onClick={toggleSidebar}
-                aria-label="Toggle Sidebar"
-            >
-                X
-            </button>
+        <div className="flex justify-between flex-col h-full border-l border-gray-200 shadow-lg">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <h2 className="text-lg font-semibold">Gia sư AI</h2>
+                <button
+                    className="text-xl font-bold transition"
+                    onClick={toggleSidebar}
+                    aria-label="Close Sidebar"
+                >
+                    ✕
+                </button>
+            </div>
+
+            {/* Chat List */}
             <ChatList
                 messages={messages}
                 removeMessagePair={removeMessagePair}
                 generating={generating}
                 error={error}
             />
+
+            {/* Input Section */}
             <SidebarInput
                 loading={generating}
                 submitMessage={submitQuery}
@@ -69,10 +73,10 @@ const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
                 clearMessages={clearMessages}
                 cancelRequest={cancelRequest}
                 pageText={pageText}
-                isVisionModel={true}
             />
         </div>
     )
 }
 
 export default Sidebar
+

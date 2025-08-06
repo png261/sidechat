@@ -1,9 +1,10 @@
 import { SideChat } from "@/components/SideChat"
+import './index.css';
 
 const settings = {
-    apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzMzMTg4LWZhY2QtNGFhZS1hNWVkLTc1ZDBhOTZhODVkOSJ9.0LKP3SKl_F0mhDy_Wr19szrqzbvI_YjUeCipxGdEgfA",
+    apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzMzMTg4LWZhY2QtNGFhZS1hNWVkLTc1ZDBhOTZhODVkOSJ9.FAb1swp9kNOYin52ofy-IlJqiR6xLdmWiu3eqEY9_wQ",
     apiUrl: "https://chat.hoclieu.vn",
-    model: "gpt-4",
+    model: "sidechat",
 }
 
 

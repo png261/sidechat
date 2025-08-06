@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import type { UserConfigExport } from 'vite'
 import dts from 'vite-plugin-dts'
 import { configDefaults, defineConfig } from 'vitest/config'
+import tailwindcss from '@tailwindcss/vite';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { name } from './package.json'
 
 const app = async (): Promise<UserConfigExport> => {
@@ -11,6 +13,8 @@ const app = async (): Promise<UserConfigExport> => {
     return defineConfig({
         plugins: [
             react(),
+            tailwindcss(),
+            cssInjectedByJsPlugin(),
             dts({
                 insertTypesEntry: true,
             }),
