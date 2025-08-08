@@ -4,14 +4,13 @@ import { useState } from 'react'
 import ChatList from './ChatList'
 import { SidebarInput } from './ChatInput'
 import { useChatCompletion } from '@/hooks/useChatCompletion'
-import type { Settings } from '@/config/settings'
 import { useSettings } from '@/provider';
 
 
 interface ChatProps {
     model: string
     pageText: string
-    toggleSidebar: any
+    toggleSidebar: () => void;
 }
 
 const Sidebar = ({ model, pageText, toggleSidebar }: ChatProps) => {

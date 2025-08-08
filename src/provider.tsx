@@ -1,28 +1,26 @@
-"use client";
-
 import type { Settings } from '@/config/settings'
 
 import React, { createContext, useContext, ReactNode } from 'react';
 
-const SettingsContext = createContext<Settings | undefined>(undefined);
+const SideChatContext = createContext<Settings | undefined>(undefined);
 
-type SettingsProviderProps = {
+type Props = {
     settings: Settings;
     children: ReactNode;
 };
 
-export const SideChatProvider = ({ settings, children }: SettingsProviderProps) => {
+export const SideChatProvider = ({ settings, children }: Props) => {
     return (
-        <SettingsContext.Provider value={settings}>
+        <SideChatContext.Provider value={settings}>
             {children}
-        </SettingsContext.Provider>
+        </SideChatContext.Provider>
     );
 };
 
 export const useSettings = (): Settings => {
-    const context = useContext(SettingsContext);
+    const context = useContext(SideChatContext);
     if (!context) {
-        throw new Error('useSettings must be used within a SettingsProvider');
+        throw new Error('useSettings must be used within a SideChatProvider');
     }
     return context;
 };
