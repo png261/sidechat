@@ -1,19 +1,22 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ChatList from './ChatList'
 import { SidebarInput } from './ChatInput'
 import { useChatCompletion } from '@/hooks/useChatCompletion'
 import type { Settings } from '@/config/settings'
+import { useSettings } from '@/provider';
+
 
 interface ChatProps {
-    settings: Settings
+    model: string
     pageText: string
     toggleSidebar: any
 }
 
-const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
+const Sidebar = ({ model, pageText, toggleSidebar }: ChatProps) => {
     const [isFullScreen, setIsFullScreen] = useState(false)
+    const settings = useSettings()
 
     const {
         messages,
@@ -21,10 +24,9 @@ const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
         clearMessages,
         generating,
         cancelRequest,
-        removeMessagePair,
         error,
     } = useChatCompletion({
-        model: settings.model!,
+        model: model!,
         apiKey: settings.apiKey!,
         apiUrl: settings.apiUrl,
     })
@@ -67,7 +69,6 @@ const Sidebar = ({ settings, pageText, toggleSidebar }: ChatProps) => {
             {/* Chat List */}
             <ChatList
                 messages={messages}
-                removeMessagePair={removeMessagePair}
                 generating={generating}
                 error={error}
                 submitMessage={submitQuery}

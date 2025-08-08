@@ -69,25 +69,6 @@ export const useCurrentChat = () => {
         }
     }, [])
 
-    const updateAssistantMessage = (chunk: string) => {
-        setMessages((msgs) => {
-            if (msgs[msgs.length - 1]?.role === ChatRole.USER) {
-                return [
-                    ...msgs,
-                    {
-                        role: ChatRole.ASSISTANT,
-                        content: chunk,
-                        timestamp: Date.now(),
-                    },
-                ]
-            }
-
-            const updated = [...msgs]
-            updated[updated.length - 1].content += chunk
-            return updated
-        })
-    }
-
     const addNewMessage = async (role: ChatRole, message: MessageDraft) => {
         if (!currentChatIdRef.current || !historyRef.current.length) {
             const newId = createChatHistory(await getCurrentSiteHostName())
@@ -112,23 +93,11 @@ export const useCurrentChat = () => {
             timestamp: Date.now(),
         }
 
-        setMessages((prev) => [...prev, newMessage])
-    }
-
-    const removeMessagePair = (timestamp: number) => {
         setMessages((prev) => {
-            const index = prev.findIndex((msg) => msg.timestamp === timestamp)
-            if (index === -1 || prev[index].role !== ChatRole.USER) return prev
-
-            const newMessages = [...prev]
-            newMessages.splice(index, 1)
-            if (newMessages[index]?.role === ChatRole.ASSISTANT) {
-                newMessages.splice(index, 1)
-            }
-            return newMessages
-        })
-
-        commitToStoredMessages()
+            const updated = [...prev, newMessage];
+            messagesRef.current = updated;  
+            return updated;
+        });
     }
 
     const commitToStoredMessages = async () => {
@@ -144,12 +113,10 @@ export const useCurrentChat = () => {
 
     return {
         messages: messagesRef.current,
-        updateAssistantMessage,
         addNewMessage,
         commitToStoredMessages,
         clearMessages,
         currentChatId,
-        removeMessagePair,
     }
 }
 

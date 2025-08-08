@@ -2,15 +2,14 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import Sidebar from './Sidebar'
-import type { Settings } from '@/config/settings'
 import { RiRobot2Line } from 'react-icons/ri'
 
 export interface SideChatProps {
     children: React.ReactNode
-    settings: Settings
+    model: string
 }
 
-export const SideChat = ({ children, settings }: SideChatProps) => {
+export const SideChat = ({ children, model }: SideChatProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
     const [pageText, setPageText] = useState<string>('')
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -44,7 +43,7 @@ export const SideChat = ({ children, settings }: SideChatProps) => {
 
             {isSidebarOpen && (
                 <Sidebar
-                    settings={settings}
+                    model={model}
                     pageText={pageText}
                     toggleSidebar={toggleSidebar}
                 />

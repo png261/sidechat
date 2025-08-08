@@ -21,7 +21,6 @@ import {
 
 interface ChatListProps {
     messages: ChatMessage[]
-    removeMessagePair: (timestamp: number) => void
     generating: boolean
     error: Error | null
     submitMessage: (message: MessageDraft, context?: string) => void
@@ -36,13 +35,9 @@ const ChatList = ({
     pageText
 }: ChatListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
-    const {
-        messageDraft,
-        setMessageDraftText,
-        resetMessageDraft,
-    } = useMessageDraft()
 
     useEffect(() => {
+        console.log({ messages })
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight
         }
@@ -70,9 +65,10 @@ const ChatList = ({
     ]
 
     const handleSubmit = async (prompt: string) => {
-        setMessageDraftText(prompt)
-        submitMessage(messageDraft, pageText)
-        resetMessageDraft()
+        const newMessage: MessageDraft = {
+            text: prompt,
+        }
+        submitMessage(newMessage, pageText)
     }
 
     return (
@@ -81,7 +77,6 @@ const ChatList = ({
             className="flex flex-col overflow-y-auto h-[calc(100vh-10rem)] p-4"
         >
             {filteredMsgs.length === 0 ? (
-                // Display suggestions when chat is empty
                 <div className="flex flex-col items-center justify-center h-full text-center p-4">
                     <h3 className="text-xl font-semibold text-gray-700 mb-4">
                         Xin chào! Tôi có thể giúp gì cho bạn?

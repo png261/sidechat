@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { IoSend } from 'react-icons/io5'
 import { HiHand } from 'react-icons/hi'
-import { useChatHistory } from '@/hooks/useChatHistory'
 import {
     type MessageDraft,
     useMessageDraft,
@@ -33,7 +32,6 @@ export function SidebarInput({
         resetMessageDraft,
     } = useMessageDraft()
     const [delayedLoading, setDelayedLoading] = useState(false)
-    const { history } = useChatHistory()
 
     useEffect(() => {
         const handleLoadingTimeout = setTimeout(() => {
