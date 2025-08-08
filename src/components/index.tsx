@@ -43,13 +43,11 @@ export const SideChat = ({ children, settings }: SideChatProps) => {
             )}
 
             {isSidebarOpen && (
-                <div className="fixed top-0 right-0 h-full w-100 bg-white shadow-lg z-50 transition duration-300">
-                    <Sidebar
-                        settings={settings}
-                        pageText={pageText}
-                        toggleSidebar={toggleSidebar}
-                    />
-                </div>
+                <Sidebar
+                    settings={settings}
+                    pageText={pageText}
+                    toggleSidebar={toggleSidebar}
+                />
             )}
         </div>
     )

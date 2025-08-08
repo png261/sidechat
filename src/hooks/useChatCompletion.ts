@@ -23,7 +23,7 @@ export const useChatCompletion = ({
 }: UseChatCompletionProps) => {
     const {
         messages,
-        updateAssistantMessage,
+        updateAssistantMessage, // This is no longer used, but kept for context.
         addNewMessage,
         commitToStoredMessages,
         clearMessages,
@@ -34,16 +34,10 @@ export const useChatCompletion = ({
     const [error, setError] = useState<Error | null>(null);
 
     const submitQuery = async (message: MessageDraft, context?: string) => {
-        // Prevent duplicate submissions while generating
         if (generating) return;
 
-        // Add user message only once
         await addNewMessage(ChatRole.USER, message);
         controller = new AbortController();
-        const options = {
-            signal: controller.signal,
-            callbacks: [{ handleLLMNewToken: updateAssistantMessage }],
-        };
 
         setError(null);
         setGenerating(true);
@@ -58,7 +52,6 @@ export const useChatCompletion = ({
           `
                 : message.text;
 
-            // Construct messages array with system prompt and current message
             const messagesToSend = [
                 ...messages.map((msg) => {
                     switch (msg.role) {
@@ -85,6 +78,8 @@ export const useChatCompletion = ({
                 },
                 body: JSON.stringify({
                     model,
+                    'files': [{ 'type': 'collection', 'id': "Dialy9" }],
+                    "tool_ids": [ "spyci" ],
                     messages: messagesToSend.map((m) => {
                         if (m instanceof SystemMessage) {
                             return { role: 'system', content: m.content };
@@ -97,7 +92,7 @@ export const useChatCompletion = ({
                         }
                     }),
                 }),
-                signal: options.signal,
+                signal: controller.signal,
             });
 
             if (!response.ok) {
@@ -105,14 +100,14 @@ export const useChatCompletion = ({
                 throw new Error(`API Error ${response.status}: ${errorText}`);
             }
 
+            // Get the full JSON response
             const data = await response.json();
-            const content = data?.choices?.[0]?.message?.content || 'No response.';
+            console.log(data)
+            const fullContent = data?.choices?.[0]?.message?.content || 'No response.';
 
-            // Simulate streaming without splitting into tokens
-            await new Promise((resolve) => setTimeout(() => {
-                options.callbacks?.[0].handleLLMNewToken(content);
-                resolve(null);
-            }, 60));
+            // Add the complete assistant message to the chat state
+            await addNewMessage(ChatRole.ASSISTANT, { text: fullContent });
+
         } catch (e) {
             setError(e as Error);
         } finally {

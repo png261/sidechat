@@ -13,7 +13,6 @@ export enum ChatRole {
 export type ChatMessage = {
     role: ChatRole
     content: string
-    files?: MessageFile[]
     timestamp: number
 }
 
@@ -110,7 +109,6 @@ export const useCurrentChat = () => {
         const newMessage: ChatMessage = {
             role,
             content: message.text,
-            files: message.files,
             timestamp: Date.now(),
         }
 
