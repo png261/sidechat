@@ -3,7 +3,7 @@ import './index.css';
 
 export default function Home() {
     return (
-        <SideChat>
+        <SideChat model="sidechat">
         </SideChat>
     );
 }
